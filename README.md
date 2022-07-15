@@ -1,1 +1,1 @@
-# ytdlp_gui_wrapper
+# A simple gui wrapper for yt-dlp
