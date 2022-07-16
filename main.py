@@ -125,7 +125,7 @@ class Input(tk.Frame):
             if(counter == audio_index):
                 tk.Label(self.frame_download, text="音声").pack()
             resolution = fmt["resolution"]
-            print(fmt)
+            # print(fmt)
             # print(fmt["filesize"], fmt["filesize_approx"])
             filesize = round(int(fmt["filesize"]) / 1024 / 1024)
             vcodec = fmt["video_ext"]
@@ -209,10 +209,10 @@ class Input(tk.Frame):
         else:
             fmt_string = "{}".format(fmt["format_id"])
         
-        print(self.output_directory)
+        # print(self.output_directory)
         # ydl_ops = {"format" : "{}".format(fmt_string), "--merge-output-format": "mp4", "--paths": str(self.output_directory)}
         commands = "yt-dlp -f {} --paths {} {}".format(fmt_string, self.output_directory, self.yt_url)
-        print(commands)
+        # print(commands)
         subprocess.run(commands, shell=True)
         # ydl = YoutubeDL(ydl_ops)
         # thread1 = threading.Thread(target=ydl.download, args = (self.yt_url, ))
