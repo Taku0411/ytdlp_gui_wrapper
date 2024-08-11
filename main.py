@@ -91,10 +91,18 @@ class Input(tk.Frame):
         info = ydl.extract_info(url=url, download=False)
         formats = info["formats"]
         self.vid_title = info["title"]
+
+        duration = self.get_duration(info)
         for fmt in formats:
-            if(fmt["resolution"] == "audio only" and fmt["format_note"] != "storyboard"):
+            # audio only
+            if(fmt["resolution"] == "audio only" and fmt["format_note"] != "storyboard") and "m3u8" not in fmt["protocol"]:
                 self.audio_fmts.append(fmt)
-            if(fmt["acodec"] == "none" and fmt["format_note"] != "storyboard" and fmt["vcodec"] != "none"):
+            # video only
+            if "vp09" in fmt["vcodec"]:
+                # for m3u8 format, estimate file size
+                if fmt["protocol"] == "m3u8_native":
+                    vbr = fmt["vbr"]
+                    fmt["filesize"] = vbr * duration * 1024 / 8
                 if(fmt["ext"] == "mp4"):
                     self.mp4_fmts.append(fmt)
                 if(fmt["ext"] == "webm"):
@@ -109,6 +117,15 @@ class Input(tk.Frame):
             if(a_fmt["filesize"] > max_size and a_fmt["ext"] == "webm"):
                 self.for_audio_webm = a_fmt
                 max_size = a_fmt["filesize"]
+
+    # get seconds
+    def get_duration(self, info):
+        for fmt in info["formats"]:
+            if fmt["format_note"] == "storyboard":
+                if fmt["fragments"][0]["duration"]:
+                    return int(fmt["fragments"][0]["duration"])
+        print("error")
+
     def setMovieList(self):
         self.all_list = self.mp4_fmts + self.webm_fmts + self.audio_fmts
         webm_index = len(self.mp4_fmts)
