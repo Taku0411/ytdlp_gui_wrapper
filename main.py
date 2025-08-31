@@ -97,16 +97,12 @@ class Input(tk.Frame):
             # audio only
             if(fmt["resolution"] == "audio only" and fmt["format_note"] != "storyboard") and "m3u8" not in fmt["protocol"]:
                 self.audio_fmts.append(fmt)
-            # video only
-            if "vp9" in fmt["vcodec"]:
-                # for m3u8 format, estimate file size
-                if fmt["protocol"] == "m3u8_native":
-                    vbr = fmt["vbr"]
-                    fmt["filesize"] = vbr * duration * 1024 / 8
-                if(fmt["ext"] == "mp4"):
-                    self.mp4_fmts.append(fmt)
-                if(fmt["ext"] == "webm"):
-                    self.webm_fmts.append(fmt)
+            # webm
+            elif "vp9" in fmt["vcodec"]:
+                self.webm_fmts.append(fmt)
+            # mp4
+            elif "avc1" in fmt["vcodec"]:
+                self.mp4_fmts.append(fmt)
         max_size = 0
         max_size2 = 0
         for a_fmt in self.audio_fmts:
