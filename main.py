@@ -98,7 +98,7 @@ class Input(tk.Frame):
             if(fmt["resolution"] == "audio only" and fmt["format_note"] != "storyboard") and "m3u8" not in fmt["protocol"]:
                 self.audio_fmts.append(fmt)
             # video only
-            if "vp09" in fmt["vcodec"]:
+            if "vp9" in fmt["vcodec"]:
                 # for m3u8 format, estimate file size
                 if fmt["protocol"] == "m3u8_native":
                     vbr = fmt["vbr"]
